@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/yau-blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/yau-blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/yau-blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/yau-blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/yau-blog/css/main.css">
+
+
+<link rel="stylesheet" href="/yau-blog/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/yau-blog/lib/pace/pace-theme-loading-bar.min.css">
+  <script src="/yau-blog/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yautze.github.io","root":"/yau-blog/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":240,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="你是否想過分享自己寫完的筆記或是文章嗎?但又不想做一些很麻煩的事情來實踐這個想法那麼透過 Hexo 來建立屬於自己的部落格會是你一個好選擇！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo - 建立屬於自己的部落格">
+<meta property="og:url" content="https://yautze.github.io/yau-blog/2021/12/02/20211202-1/index.html">
+<meta property="og:site_name" content="YauTz&#39;s Blog">
+<meta property="og:description" content="你是否想過分享自己寫完的筆記或是文章嗎?但又不想做一些很麻煩的事情來實踐這個想法那麼透過 Hexo 來建立屬於自己的部落格會是你一個好選擇！">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://scontent.ftpe4-2.fna.fbcdn.net/v/t1.15752-9/263023196_1496334174082631_4588728063359370907_n.png?_nc_cat=100&ccb=1-5&_nc_sid=ae9488&_nc_ohc=vrI8f1F368MAX_-aqRl&_nc_ht=scontent.ftpe4-2.fna&oh=be538779d96e41c2ddd103ca85ce0bc9&oe=61CF31EB">
+<meta property="og:image" content="https://scontent.ftpe4-1.fna.fbcdn.net/v/t1.15752-9/260593912_242177871343601_7214120357166358976_n.png?_nc_cat=106&ccb=1-5&_nc_sid=ae9488&_nc_ohc=N-w9r-YGOFwAX__V0NN&_nc_ht=scontent.ftpe4-1.fna&oh=36f3e6cd11c50e068c842e3fbae30fad&oe=61CEBDEB">
+<meta property="og:image" content="https://scontent.ftpe4-2.fna.fbcdn.net/v/t1.15752-9/259977906_416803966770968_3012149253162255843_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=tqlqnB_dcPMAX8f828b&tn=8BkEQnO2Oqqy053t&_nc_ht=scontent.ftpe4-2.fna&oh=c7b5f32081b3afe5587cf0603663827d&oe=61CE7100">
+<meta property="article:published_time" content="2021-12-02T02:25:09.000Z">
+<meta property="article:modified_time" content="2021-12-02T06:11:39.800Z">
+<meta property="article:author" content="YauTz">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://scontent.ftpe4-2.fna.fbcdn.net/v/t1.15752-9/263023196_1496334174082631_4588728063359370907_n.png?_nc_cat=100&ccb=1-5&_nc_sid=ae9488&_nc_ohc=vrI8f1F368MAX_-aqRl&_nc_ht=scontent.ftpe4-2.fna&oh=be538779d96e41c2ddd103ca85ce0bc9&oe=61CF31EB">
+
+<link rel="canonical" href="https://yautze.github.io/yau-blog/2021/12/02/20211202-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>Hexo - 建立屬於自己的部落格 | YauTz's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/yau-blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">YauTz's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Backend Engineer</br>正在成長茁壯的問題解決工程師</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/yau-blog/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/yau-blog/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/yau-blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/yau-blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/yau-blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔<span class="badge">1</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/yautze" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://yautze.github.io/yau-blog/2021/12/02/20211202-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/yau-blog/images/photo.jpg">
+      <meta itemprop="name" content="YauTz">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YauTz's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo - 建立屬於自己的部落格
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2021-12-02 10:25:09 / 修改時間：14:11:39" itemprop="dateCreated datePublished" datetime="2021-12-02T10:25:09+08:00">2021-12-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/yau-blog/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/yau-blog/2021/12/02/20211202-1/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/12/02/20211202-1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>2 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>你是否想過分享自己寫完的筆記或是文章嗎?但又不想做一些很麻煩的事情來實踐這個想法<br>那麼透過 Hexo 來建立屬於自己的部落格會是你一個好選擇！</p>
+<span id="more"></span>
+
+<!-- Hexo 介紹 -->
+<h3 id="什麼是-Hexo"><a href="#什麼是-Hexo" class="headerlink" title="什麼是 Hexo"></a>什麼是 Hexo</h3><p>Hexo 是一款基於 Node.js 的網誌框架,它不僅能夠快速、簡單的建立屬於自己風格的部落格，還能使用 Markdown 的語法來撰寫文章，甚至能在幾秒鐘的時間就將自己的部落格部署到免費的雲端服務上(Heroku、GitHub Page)。</p>
+<p>Hexo 擁有豐富的開源生態，因此有許多功能插件或是主題可以使用，這也是為什麼 Hexo 這麼多人使用的原因之一。</p>
+<h4 id="使用-Hexo-的優點"><a href="#使用-Hexo-的優點" class="headerlink" title="使用 Hexo 的優點"></a>使用 Hexo 的優點</h4><ol>
+<li>使用 Markdown 語法撰寫文，上手難度相較簡單</li>
+<li>可搭配線上 CICD 工具快速部署於各種免費雲端服務上，不需額外花費金錢成本</li>
+<li>中文文件資源多</li>
+<li>開源社群活躍</li>
+<li>基於 Node.js 擁有豐富的功能插件</li>
+<li>擁有許多模板，能快速切換自己喜歡的樣式</li>
+</ol>
+<!-- Hexo 安裝 -->
+<h3 id="Hexo-的初始化安裝"><a href="#Hexo-的初始化安裝" class="headerlink" title="Hexo 的初始化安裝"></a>Hexo 的初始化安裝</h3><p>安裝前請先檢查電腦上有以下兩個環境</p>
+<ul>
+<li>Git</li>
+<li>Node.js</li>
+</ul>
+<p>如果上面兩個都安裝完畢了，只要cmd內輸入下面這行即可以安裝好 Hexo</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>如果都還沒安裝可依照以下的網址或步驟下載</p>
+<h4 id="安裝-Git"><a href="#安裝-Git" class="headerlink" title="安裝 Git"></a>安裝 Git</h4><ul>
+<li>Windows<br>  <a target="_blank" rel="noopener" href="https://git-scm.com/download/win">下載並安裝 Git</a></li>
+<li>Mac<ol>
+<li>下載 Homebrew<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure></li>
+<li>下載 Git<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install git</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li>Linux(Ubuntu)  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git-core</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="安裝-Node-js"><a href="#安裝-Node-js" class="headerlink" title="安裝 Node.js"></a>安裝 Node.js</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://nodejs.org/en/">官網下載</a></li>
+<li>Mac  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br></pre></td></tr></table></figure></li>
+</ul>
+<!-- Hexo 建立專案 -->
+<h3 id="建立初始化的-Hexo-Blog"><a href="#建立初始化的-Hexo-Blog" class="headerlink" title="建立初始化的 Hexo Blog"></a>建立初始化的 Hexo Blog</h3><p>首先在你要放 Blog 專案的資料夾下輸入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init [filename]</span><br></pre></td></tr></table></figure>
+
+<p>接著利用 npm 安裝相關 Hexo 套件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>這時已經完成本地端伺服器的架設了<br>利用以下指令即可在 <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a> 開啟 server</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br><span class="line">// or</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<!-- Hexo 檔案介紹 -->
+<h3 id="Hexo-檔案介紹"><a href="#Hexo-檔案介紹" class="headerlink" title="Hexo 檔案介紹"></a>Hexo 檔案介紹</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.landscape.yml // 初始化 themes 的配置檔 (可刪除)</span><br><span class="line">├── _config.yml           // Blog 的配置檔</span><br><span class="line">├── node_modules          </span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json          // Node 的依賴套件</span><br><span class="line">├── scaffolds             // 文章格式</span><br><span class="line">├── source                // 各種外部資源(Ex: 圖片、文章md檔)</span><br><span class="line">└── themes                // Blog 的模板</span><br></pre></td></tr></table></figure>
+<h4 id="scaffolds"><a href="#scaffolds" class="headerlink" title="scaffolds"></a>scaffolds</h4><p>當建立新文章時，Hexo 會根據 scaffold 資料夾內相對應的檔案來建立檔案<br>Ex: 文章格式 (scaffolds/post.md)<br>    <img src="https://scontent.ftpe4-2.fna.fbcdn.net/v/t1.15752-9/263023196_1496334174082631_4588728063359370907_n.png?_nc_cat=100&ccb=1-5&_nc_sid=ae9488&_nc_ohc=vrI8f1F368MAX_-aqRl&_nc_ht=scontent.ftpe4-2.fna&oh=be538779d96e41c2ddd103ca85ce0bc9&oe=61CF31EB"></p>
+<p>會產生出符合預設規範的文章<br><img src="https://scontent.ftpe4-1.fna.fbcdn.net/v/t1.15752-9/260593912_242177871343601_7214120357166358976_n.png?_nc_cat=106&ccb=1-5&_nc_sid=ae9488&_nc_ohc=N-w9r-YGOFwAX__V0NN&_nc_ht=scontent.ftpe4-1.fna&oh=36f3e6cd11c50e068c842e3fbae30fad&oe=61CEBDEB"></p>
+<p>產生新文章語法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post1</span><br></pre></td></tr></table></figure>
+
+<h4 id="source"><a href="#source" class="headerlink" title="source"></a>source</h4><p>source 資料夾是放置內容的地方。所有的檔案或是資料夾通常都會在這邊，開頭會加上 _(底線) 來命名，讓這些資料夾或是檔案也成為隱藏檔案而被忽略，除了 _posts 資料夾以外。Markdown 和 HTML 檔案會被發布並存放到 public 資料夾，而其他檔案沒有以底線命名的就會被拷貝過去。</p>
+<h4 id="themes"><a href="#themes" class="headerlink" title="themes"></a>themes</h4><p>themes 資料夾是放置所有 Hexo 的樣式，只要把喜歡的樣式放入此資料夾，再調整 _config.yml 後,就可以設定成該樣式。</p>
+<h4 id="config-yml"><a href="#config-yml" class="headerlink" title="_config.yml"></a>_config.yml</h4><p>_config.yml 是整個 Hexo 的配置檔，網站的各種配置設定都在這邊，Ex：網頁標題、網站描述、網站的網址、路徑等等<br><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/configuration">更多詳細設定內容</a></p>
+<!-- Hexo 樣式轉換 -->
+<h3 id="如何更換-Hexo-的樣式"><a href="#如何更換-Hexo-的樣式" class="headerlink" title="如何更換 Hexo 的樣式"></a>如何更換 Hexo 的樣式</h3><p>這邊以 <a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">Next</a> 的樣式為例<br><a target="_blank" rel="noopener" href="https://hexo.io/themes/">更多樣式</a></p>
+<p>首先先移動到 themes 的資料夾內, 並輸入以下語法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/theme-next/hexo-theme-next next </span><br></pre></td></tr></table></figure>
+
+<p>接者把 _config.yml 內的 theme 資訊修改為 next </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
+
+<p>再重新啟動一次server就可以看到樣式變更了哦</p>
+<!-- 部署 -->
+<h3 id="Github-Page-部署"><a href="#Github-Page-部署" class="headerlink" title="Github Page 部署"></a>Github Page 部署</h3><p>為了讓自己設計好的Blog可以在網路上被查詢到，雖然有很多方法都可以達到這個需求，但今天要教學是既簡單又暴力,重點還是一個免費的方法，那就是利用GitHub Page的方式。</p>
+<p>首先先在 GitHub 建立名為<font color=#e9967a>username.github.io</font>的公開 Repository<br>username : 自己 GitHub 的名稱<br><img src="https://scontent.ftpe4-2.fna.fbcdn.net/v/t1.15752-9/259977906_416803966770968_3012149253162255843_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=tqlqnB_dcPMAX8f828b&tn=8BkEQnO2Oqqy053t&_nc_ht=scontent.ftpe4-2.fna&oh=c7b5f32081b3afe5587cf0603663827d&oe=61CE7100"></p>
+<p>接著是在 _config.yml 設定要部署到這個 Repository中<br><a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment">Hexo 文件</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">&quot;repository 的 github 網址&quot;</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span> <span class="comment"># 哪個分支上 </span></span><br></pre></td></tr></table></figure>
+
+<p>再來就是將自己設計好的Hexo專案部署到 GitHub Page 上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// step1. clean - 清除舊的網頁靜態檔</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">// step2. generate - 產生新的網頁靜態檔</span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line">// step3. deploy - 部署</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>最後就是等待 GitHub 部署完成囉～ 這個可能要等待一段時間才會完成</p>
+<!-- Hexo 結語 -->
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/yau-blog/tags/Hexo/" rel="tag"># Hexo</a>
+              <a href="/yau-blog/tags/Blog/" rel="tag"># Blog</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF-Hexo"><span class="nav-number">1.</span> <span class="nav-text">什麼是 Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Hexo-%E7%9A%84%E5%84%AA%E9%BB%9E"><span class="nav-number">1.1.</span> <span class="nav-text">使用 Hexo 的優點</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo-%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%89%E8%A3%9D"><span class="nav-number">2.</span> <span class="nav-text">Hexo 的初始化安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D-Git"><span class="nav-number">2.1.</span> <span class="nav-text">安裝 Git</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D-Node-js"><span class="nav-number">2.2.</span> <span class="nav-text">安裝 Node.js</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84-Hexo-Blog"><span class="nav-number">3.</span> <span class="nav-text">建立初始化的 Hexo Blog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo-%E6%AA%94%E6%A1%88%E4%BB%8B%E7%B4%B9"><span class="nav-number">4.</span> <span class="nav-text">Hexo 檔案介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#scaffolds"><span class="nav-number">4.1.</span> <span class="nav-text">scaffolds</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#source"><span class="nav-number">4.2.</span> <span class="nav-text">source</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#themes"><span class="nav-number">4.3.</span> <span class="nav-text">themes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#config-yml"><span class="nav-number">4.4.</span> <span class="nav-text">_config.yml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9B%B4%E6%8F%9B-Hexo-%E7%9A%84%E6%A8%A3%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">如何更換 Hexo 的樣式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Github-Page-%E9%83%A8%E7%BD%B2"><span class="nav-number">6.</span> <span class="nav-text">Github Page 部署</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YauTz"
+      src="/yau-blog/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">YauTz</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/yau-blog/archives/">
+        
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/yau-blog/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/yau-blog/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yautze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yautze" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/%E6%89%BF%E7%A5%90-%E9%99%B3-855837201/" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;%E6%89%BF%E7%A5%90-%E9%99%B3-855837201&#x2F;" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YauTz - 轉載文章時請附上作者以及原文網址</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/yau-blog/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/yau-blog/lib/velocity/velocity.min.js"></script>
+  <script src="/yau-blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/yau-blog/js/utils.js"></script>
+
+<script src="/yau-blog/js/motion.js"></script>
+
+
+<script src="/yau-blog/js/schemes/pisces.js"></script>
+
+
+<script src="/yau-blog/js/next-boot.js"></script>
+
+<script src="/yau-blog/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/yau-blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yautze-blog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://yautze.github.io/yau-blog/2021/12/02/20211202-1/";
+    this.page.identifier = "2021/12/02/20211202-1/";
+    this.page.title = "Hexo - 建立屬於自己的部落格";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yautze-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
