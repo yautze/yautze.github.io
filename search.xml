@@ -79,7 +79,10 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// step1. clean - 清除舊的網頁靜態檔</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line">// step2. generate - 產生新的網頁靜態檔</span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line">// step3. deploy - 部署</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
 
 <p>最後就是等待 GitHub 部署完成囉～ 這個可能要等待一段時間才會完成</p>
-<!-- Hexo 結語 -->]]></content>
+<!-- Hexo 結語 -->
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>那這篇文章是想要紀錄自己踩坑 Hexo 的過程，其實還有很多東西沒有提到，像是其他額外插件功能之類的，那這部分就要請讀者自行去研究囉～</p>
+<p>最後由於第一次寫文章，有寫不好的地方再請大家見諒。</p>
+]]></content>
       <categories>
         <category>Hexo</category>
       </categories>
