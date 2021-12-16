@@ -92,4 +92,143 @@
         <tag>GitHub Page</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Redis 快取機制 &amp; 淘汰機制</title>
+    <url>/2021/12/15/20211215-1/</url>
+    <content><![CDATA[<p>在高效能、高併發的系統中, 快取機制是相當重要的, 那麼為什麼Redis可以當作快取機制的使用呢?<br>首先可以作為快取有主要以下兩個特徵: </p>
+<ol>
+<li>在分散系統中處於記憶體/CPU需具備訪問效能良好</li>
+<li>快取資料過於飽足時, 需要有良好的資料淘汰機制去處理</li>
+</ol>
+<p>由於 Redis 天生就具有這兩個特徵, Redis基於記憶體操作的, 且其具有完善的資料淘汰機制, 十分適合作為快取機制的基礎。</p>
+<span id="more"></span>
+<h3 id="Redis-資料淘汰機制"><a href="#Redis-資料淘汰機制" class="headerlink" title="Redis 資料淘汰機制"></a>Redis 資料淘汰機制</h3><p>Redis 快取是基於記憶體實現的, 也因為這個原因導致儲存容量是有限制的, 所以當 Redis 快取被寫滿的時候, Redis就需要快取資料淘汰機制, 通過一定淘汰規則將一些資料篩選出來並刪除, 讓快取機制可以繼續使用。</p>
+<p>在 Redis 4.0 之後, Redis 快取淘汰策略總共有8種, 包含三大類</p>
+<ol>
+<li>不淘汰資料<ul>
+<li>noeviction : 不進行資料淘汰, 當快取被寫滿後, Redis返回錯誤</li>
+</ul>
+</li>
+<li>在<strong>有設定過期時間的資料中</strong>篩選刪除<ul>
+<li>volatile-random : 在有設定過期時間的資料中隨機刪除</li>
+<li>volatile-ttl : 在有設定過期時間的資料中, 基於過期時間的先後進行刪除, 越早過期的越先被刪除</li>
+<li>volatile-lru : 基於 LRU (Least Recently Used) 演算法篩選有設定過期時間的資料中, 近期最少使用的原則來篩選資料刪除</li>
+<li>volatile-lfu : 使用 LFU (Least Frequently Used) 演算法選擇有設定過期時間的資料中, 近期使用頻率最少的資料來篩選資料刪除</li>
+</ul>
+</li>
+<li>在<strong>所有資料中</strong>篩選刪除<ul>
+<li>allkeys-random : 在所有資料中隨機刪除</li>
+<li>allkeys-lru : 基於 LRU (Least Recently Used) 演算法在所有資料中來篩選刪除</li>
+<li>allkeys-lfu : 基於 LFU (Least Frequently Used) 演算法在所有資料中來篩選刪除</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5fe5357b0f514e06b095ead23e60faa9~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<h4 id="LRU-近期最少使用"><a href="#LRU-近期最少使用" class="headerlink" title="LRU - 近期最少使用"></a>LRU - 近期最少使用</h4><p>Least Recently Used 演算法, 概念是會儲存最近用過的內容, 會透過 Hash Map 與 Double Linked List 來搭配實做, 如果常被使用, 內容會被擺在 List 愈前方的位置, 如果快取滿了, 則會從 List 最末端元素開始移除。</p>
+<ul>
+<li>MRU 端 : 代表最近最常使用</li>
+<li>LRU 端 : 最近最不常用</li>
+</ul>
+<p>補充 : 搜尋的時間複雜度O(1)<br><img src="https://imgur.com/WkpPJlT.png"></p>
+<p>LRU 需要透過 Linked List 來管理所有快取資料, 這會帶來額外的空間開銷, 再加上當有資料被訪問時,需要在 Linked List 上把該資料移動到 MRU 端, 如果有大量資料被訪問, 就會帶來很多連結串列移動操作, 會很耗時，進而會降低 Redis 快取效能。</p>
+<h4 id="LFU-近期使用頻率最少"><a href="#LFU-近期使用頻率最少" class="headerlink" title="LFU - 近期使用頻率最少"></a>LFU - 近期使用頻率最少</h4><p>Least Frequently Used 演算法, 是一定時期內被訪問次數最少的節點, 在將來被訪問到的機率也是最小的。</p>
+<p>LFU有兩種實現方式</p>
+<ol>
+<li>雜湊表+平衡二叉樹</li>
+<li>雙雜湊表</li>
+</ol>
+<p>雙雜湊表<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b04d307959624cc88fea4f61be71f5d0~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p>雙雜湊表需要維護兩個雜湊表以及一個最少頻次使用的計數minFreq</p>
+<p>第一個雜湊表是 freq_table, 它的key是訪問的頻次, 它的 value 是一個雙向連結串列, 雙向連結串列的每一個節點包含三個元素 : key, value, 以及count。</p>
+<p>第二個雜湊表是 key_table, 它的key是雙向連結串列中儲存的key, value 是對應節點的指標(這樣查詢的時間複雜度就是O(1))。</p>
+<h3 id="Redis-快取模式"><a href="#Redis-快取模式" class="headerlink" title="Redis 快取模式"></a>Redis 快取模式</h3><p>Redis快取模式基於是否接收寫請求, 可以分成只讀快取和讀寫快取兩種</p>
+<ol>
+<li>只讀快取 : 只處理讀操作, 所有的更新操作都在資料庫中, 這樣資料不會有丟失的風險。<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d0fbbd780eb84685895843b88a9972a3~tplv-k3u1fbpfcp-zoom-1.image"><ul>
+<li>Cache Aside模式</li>
+</ul>
+</li>
+<li>讀寫快取 : 讀寫操作都在快取中執行, 出現當機故障, 會導致資料丟失。快取回寫資料到資料庫有分成兩種同步和非同步。<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/73fe11d51ca34412bb703d6b8879a88e~tplv-k3u1fbpfcp-zoom-1.image"><ul>
+<li>同步<ul>
+<li>Read-Throug模式</li>
+<li>Write-Through模式</li>
+</ul>
+</li>
+<li>非同步<ul>
+<li>Write-Behind模式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="Cache-Aside模式"><a href="#Cache-Aside模式" class="headerlink" title="Cache Aside模式"></a>Cache Aside模式</h4><p>查詢資料時, 會先去快取中找有沒有資料, 如果沒有資料後才會去資料庫中取得資料, 獲取資料後會將資料儲存到快取中。<br>操作更新或刪除操作時, 會先將資料庫的操作成功後, 才會處理快取的部分。</p>
+<p>Cache Aside模式存在著併發風險 : 執行讀操作未命中快取, 然後查詢資料庫中取資料, 資料已經查詢到還沒放入快取, 同一時間併發了一個更新的操作讓快取失效, 然後讀操作再把查詢到資料載入快取，導致快取的資料是沒有更新後的資料。</p>
+<h4 id="Read-Write-Throug模式"><a href="#Read-Write-Throug模式" class="headerlink" title="Read/Write-Throug模式"></a>Read/Write-Throug模式</h4><p>查詢資料和更新資料都直接操作快取, 快取以同步方式將資料更新回資料庫中。出現髒資料的概率較低, 但是就非常依賴快取, 對快取的穩定性有較大要求, 但同步更新會導致其效能不好。</p>
+<h4 id="Write-Behind模式"><a href="#Write-Behind模式" class="headerlink" title="Write Behind模式"></a>Write Behind模式</h4><p>查詢資料和更新資料都直接操作快取, 但快取服務以非同步方式地將資料更新回資料庫中(通過非同步任務), 速度快, 效率會非常高, 但是資料的一致性比較差, 還可能會有資料的丟失情況, 實現邏輯也較為複雜。</p>
+<h3 id="使用快取常見的問題"><a href="#使用快取常見的問題" class="headerlink" title="使用快取常見的問題"></a>使用快取常見的問題</h3><h4 id="快取與資料庫資料不一致"><a href="#快取與資料庫資料不一致" class="headerlink" title="快取與資料庫資料不一致"></a>快取與資料庫資料不一致</h4><ul>
+<li><p>只讀快取(Cache Aside模式)<br>讀操作都發生在快取中, 資料不一致只會發生在刪除和修改操作上(新增操作不會, 因為新增只會在資料庫處理)當發生刪除或修改操作時, 快取也需要跟著資料庫做更新或刪除, 因此在資料庫和快取處理過程中, 無論這兩個操作的執行順序, 只要有一個操作失敗了就會出現資料不一致的情況。</p>
+</li>
+<li><p>讀寫快取(Read/Write-Throug、Write Behind模式)<br>對於讀寫快取, 寫操作都發生在快取中, 後再更新資料庫, 只要有一個操作失敗了就會出現資料不一致的情況。</p>
+</li>
+</ul>
+<h4 id="快取雪崩"><a href="#快取雪崩" class="headerlink" title="快取雪崩"></a>快取雪崩</h4><p>由於快取中有大量資料同時過期失效或者快取出現問題, 大量的請求無法在 Redis 快取中取得資料, 進而要到資料庫去找資料, 導致資料庫的壓力增加, 嚴重的會造成資料庫當機。</p>
+<p>解決方案</p>
+<ul>
+<li>快取中有大量資料同時過期, 導致大量請求無法得到處理<ul>
+<li>資料預熱 : 將容易發生併發的資料先透過手動觸發提早存入快取中。</li>
+<li>設定不同的過期時間, 讓過期的時間點分散。</li>
+<li>雙層快取策略 : 在原快取上加上拷貝快取, 原快取失效時可以訪問拷貝快取, 且原快取失效時間設定為短期, 拷貝快取設定為長期。</li>
+<li>服務降級 : 發生快取雪崩時, 針對不同的資料採取不同的降級方案, 例如, 非核心資料直接返回預設值、空值或是錯誤資訊。</li>
+</ul>
+</li>
+<li>快取當機<ul>
+<li>系統中實現服務熔斷或請求限流機制, 防止大量訪問使得資料庫當機。</li>
+</ul>
+</li>
+</ul>
+<h4 id="快取穿透"><a href="#快取穿透" class="headerlink" title="快取穿透"></a>快取穿透</h4><p>資料在資料庫和快取中都不存在, 導致查詢資料時, 在快取中找不到對應key的值, 都會去資料庫再查詢一遍,然後資料庫也返回空值(相當於進行了兩次無用的查詢)。</p>
+<p>解決方案</p>
+<ul>
+<li>快取空值或預設值 : 當一個查詢返回的資料為空時, 空結果也將進行快取, 並將它的過期時間設定比較短, 下次訪問直接從快取中取值, 避免了把大量請求給資料庫處理,造成資料庫出問題。</li>
+<li>布隆過濾器(BloomFilter) : 將所有可能查詢資料key雜湊到一個足夠大的bitmap中, 在查詢的時候先去BloomFilter去查詢key是否存在, 如果不存在就直接返回, 存在再去查詢快取, 快取中沒有再去查詢資料庫 , 從而避免了資料庫的壓力爆增導致當機。</li>
+</ul>
+<h4 id="快取擊穿"><a href="#快取擊穿" class="headerlink" title="快取擊穿"></a>快取擊穿</h4><p>針對某個訪問非常頻繁的資料過期失效, 導致訪問無法在快取中進行處理, 進而導致大量的請求在資料庫處理, 從而使得資料庫的壓力爆增, 嚴重的會造成當機。</p>
+<p>解決方案</p>
+<ul>
+<li>對於訪問頻繁的資料, 不設定過期時間。</li>
+</ul>
+<h4 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h4><p>在大部分的業務場景中, Redis 快取只作為只讀取使用, 優先處理資料庫後再處理快取, 藉此確保資料的一致性。</p>
+<p>至於其他的問題請參考下表</p>
+<table>
+<thead>
+<tr>
+<th>問題</th>
+<th>原因</th>
+<th>解決方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>快取雪崩</td>
+<td>大量資料同時過期失效, 快取當機</td>
+<td>資料預熱、設定不同的過期時間、雙層快取策略、服務降級、服務熔斷、限流機制</td>
+</tr>
+<tr>
+<td>快取穿透</td>
+<td>資料同時不存在資料庫和快取中</td>
+<td>快取空值或預設值、布隆過濾器(BloomFilter)</td>
+</tr>
+<tr>
+<td>快取擊穿</td>
+<td>訪問非常頻繁的資料過期失效</td>
+<td>不設定過期時間</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Redis</category>
+      </categories>
+      <tags>
+        <tag>Redis</tag>
+        <tag>Cache</tag>
+      </tags>
+  </entry>
 </search>
