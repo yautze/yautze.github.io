@@ -52,8 +52,8 @@
 
 <!-- Hexo 檔案介紹 -->
 <h3 id="Hexo-檔案介紹"><a href="#Hexo-檔案介紹" class="headerlink" title="Hexo 檔案介紹"></a>Hexo 檔案介紹</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.landscape.yml // 初始化 themes 的配置檔 (可刪除)</span><br><span class="line">├── _config.yml           // Blog 的配置檔</span><br><span class="line">├── node_modules          </span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json          // Node 的依賴套件</span><br><span class="line">├── scaffolds             // 文章格式</span><br><span class="line">├── source                // 各種外部資源(Ex: 圖片、文章md檔)</span><br><span class="line">└── themes                // Blog 的模板</span><br></pre></td></tr></table></figure>
-<h4 id="scaffolds"><a href="#scaffolds" class="headerlink" title="scaffolds"></a>scaffolds</h4><p>當建立新文章時，Hexo 會根據 scaffold 資料夾內相對應的檔案來建立檔案<br>Ex: 文章格式 (scaffolds/post.md)<br>    <img src="https://scontent.ftpe4-2.fna.fbcdn.net/v/t1.15752-9/263023196_1496334174082631_4588728063359370907_n.png?_nc_cat=100&ccb=1-5&_nc_sid=ae9488&_nc_ohc=vrI8f1F368MAX_-aqRl&_nc_ht=scontent.ftpe4-2.fna&oh=be538779d96e41c2ddd103ca85ce0bc9&oe=61CF31EB"></p>
-<p>會產生出符合預設規範的文章<br><img src="https://scontent.ftpe4-1.fna.fbcdn.net/v/t1.15752-9/260593912_242177871343601_7214120357166358976_n.png?_nc_cat=106&ccb=1-5&_nc_sid=ae9488&_nc_ohc=N-w9r-YGOFwAX__V0NN&_nc_ht=scontent.ftpe4-1.fna&oh=36f3e6cd11c50e068c842e3fbae30fad&oe=61CEBDEB"></p>
+<h4 id="scaffolds"><a href="#scaffolds" class="headerlink" title="scaffolds"></a>scaffolds</h4><p>當建立新文章時，Hexo 會根據 scaffold 資料夾內相對應的檔案來建立檔案<br>Ex: 文章格式 (scaffolds/post.md)<br>    <img src="/image/20211202/post_ex.png"></p>
+<p>會產生出符合預設規範的文章<br><img src="/image/20211202/ex_create.png"></p>
 <p>產生新文章語法</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new post1</span><br></pre></td></tr></table></figure>
 
@@ -71,7 +71,7 @@
 <p>再重新啟動一次server就可以看到樣式變更了哦</p>
 <!-- 部署 -->
 <h3 id="Github-Page-部署"><a href="#Github-Page-部署" class="headerlink" title="Github Page 部署"></a>Github Page 部署</h3><p>為了讓自己設計好的Blog可以在網路上被查詢到，雖然有很多方法都可以達到這個需求，但今天要教學是既簡單又暴力,重點還是一個免費的方法，那就是利用GitHub Page的方式。</p>
-<p>首先先在 GitHub 建立名為<font color=#e9967a>username.github.io</font>的公開 Repository<br>username : 自己 GitHub 的名稱<br><img src="https://scontent.ftpe4-2.fna.fbcdn.net/v/t1.15752-9/259977906_416803966770968_3012149253162255843_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=tqlqnB_dcPMAX8f828b&tn=8BkEQnO2Oqqy053t&_nc_ht=scontent.ftpe4-2.fna&oh=c7b5f32081b3afe5587cf0603663827d&oe=61CE7100"></p>
+<p>首先先在 GitHub 建立名為<font color=#e9967a>username.github.io</font>的公開 Repository<br>username : 自己 GitHub 的名稱<br><img src="/image/20211202/1.png"></p>
 <p>接著是在 _config.yml 設定要部署到這個 Repository中<br><a href="https://hexo.io/docs/one-command-deployment">Hexo 文件</a></p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">&quot;repository 的 github 網址&quot;</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span> <span class="comment"># 哪個分支上 </span></span><br></pre></td></tr></table></figure>
 
@@ -229,6 +229,155 @@
       <tags>
         <tag>Redis</tag>
         <tag>Cache</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>進程 (Process)、線程 (Thread)、協程 (Coroutine)</title>
+    <url>/2022/01/19/20220119-1/</url>
+    <content><![CDATA[<p>常常分不清楚進程 (Process)、線程 (Thread)、協程 (Coroutine)這三個有什麼差別嗎?<br>不了解這三者的到底有何關係嗎？</p>
+<span id="more"></span>
+
+<!-- Process -->
+<h3 id="Process-進程、程序"><a href="#Process-進程、程序" class="headerlink" title="Process - 進程、程序"></a>Process - 進程、程序</h3><h4 id="什麼是Process"><a href="#什麼是Process" class="headerlink" title="什麼是Process"></a>什麼是Process</h4><p>Process指的就是執行中的程式實例,而一個Process會被分配到的OS資源有CPU Time、Memory、I/O Devices 等,簡單來說這個Process執行的時候會需要用到多久的 CPU 時間、花費多少記憶體、甚至可能會需要一些 I/O 設備的資源。</p>
+<p><img src="/image/20220119/process1.png"></p>
+<p>可以打開工作管理員來看看,一個應用程式就是對應一個Process,而Process對於作業系統(OS)來說也可以說是一個任務,每一個Process都會有各自對應的獨立地址空間。</p>
+<h4 id="為什麼要有Process"><a href="#為什麼要有Process" class="headerlink" title="為什麼要有Process"></a>為什麼要有Process</h4><p>為了<code>合理的壓榨CPU的效能</code>和分配運行的資源,簡單來說不能讓CPU閒著</p>
+<p>在電腦中,計算核心是CPU,負責所有計算相關的工作和資源,單個CPU一次只能執行一個任務,且一個Process執行時,就把唯一一個CPU給吃滿的話,那是蠻不合理的一件事,再加上CPU與RAM或其它硬體設備的運算速度相比是快上非常多的,所以才會去壓榨CPU。</p>
+<h4 id="Process主要組成"><a href="#Process主要組成" class="headerlink" title="Process主要組成"></a>Process主要組成</h4><ol>
+<li><p>Code Section(Text Section)<br> 指得是程式碼的部分, 每一個Process都是執行某一段程式碼所產生的</p>
+</li>
+<li><p>Data Section<br> 指得是資料的部分, 代表Process所會用的資源(Ex: 全域變數、靜態變數)</p>
+</li>
+<li><p>CPU Registers<br> 指的是CPU的暫存器的內容，專門暫存指令、資料和位址的記憶體空間</p>
+</li>
+<li><p>Programming Counter &amp; Other Registers<br> 指的是程式計數器，負責記錄下一個要執行程式的地址</p>
+</li>
+<li><p>Stack<br> 包含Temporary data - 暫時性的資料<br> Ex: Function Parameters、Local variables、return address</p>
+<p> 補充 : 會稱作 stack 是由於其配置遵守 LIFO</p>
+</li>
+<li><p>Heap<br> 包含Memory dynamically allocated during run time - 運行時的動態記憶體分配</p>
+<p> 一般由程式設計師分配釋放，執行時才會知道配置大小<br> Ex: malloc/new、free/delete、pointer變數</p>
+</li>
+</ol>
+<h4 id="Process狀態"><a href="#Process狀態" class="headerlink" title="Process狀態"></a>Process狀態</h4><p>依據不同的情況會不同的狀態</p>
+<ul>
+<li>new(新產生) : Process產生中</li>
+<li>ready(就緒) : Process正在等待CPU分配資源,只要一拿到資源就可以馬上執行</li>
+<li>running(執行中) : Process取得CPU資源並且執行中</li>
+<li>waiting(等待) : Process在等待某個事件的發生,可能是等待 I/O 設備輸入輸出完成或是接收到一個信號，也可以想成是被 block (阻塞) 住</li>
+<li>terminated(exit 完成) : Process執行完成,將資源釋放掉</li>
+</ul>
+<p>記憶體<code>足夠</code>時的狀態轉換<br><img src="/image/20220119/process2.png"></p>
+<ol>
+<li>建立好Process後</li>
+<li>分配完Memory後進入ready</li>
+<li>拿到CPU資源後進入running</li>
+<li>中間會來回切換執行別的Process,執行完成之後就terminated</li>
+<li>如果執行中間需要進行I/O或是意外狀況,則進入waiting等待例外事件完成</li>
+</ol>
+<p>記憶體<code>不足夠</code>時的狀態轉換(swap-硬碟)<br><img src="/image/20220119/process3.png"><br>當記憶體不夠時,Process會先將本來要存入記憶體的資源會swap進硬碟中,等到有足夠的記憶體資源時,再從硬碟中取出,也因此導致Process的執行速度變慢</p>
+<h4 id="Context-Switch"><a href="#Context-Switch" class="headerlink" title="Context Switch"></a>Context Switch</h4><p>讓多個process可以分享單一個CPU資源的計算過程<br>當CPU Context Switch到另一個process,系統會儲存舊process的狀態並載入新process的狀態<br>Context switch 的時間是overhead,耗時根據硬體配備而不同</p>
+<p>補充 : overhead就是執行一件任務的過程中，無用的開銷</p>
+<p>交換的時機有以下幾種：</p>
+<ul>
+<li>多工</li>
+<li>中斷處理</li>
+<li>用戶態或者內核態的交換 (可能)</li>
+</ul>
+<p>Process Control Block (PCB) : OS核心中一種資料結構,當切換process時,會把未做完的process相關資訊記錄在PCB裡<br><img src="/image/20220119/process4.png"></p>
+<p>Process Scheduling Queue : OS在Process Scheduling Queue中維護所有的 PCB</p>
+<ol>
+<li>Job queue - 所有在系統上的Process</li>
+<li>Ready queue - 存在主記憶體中, 狀態為ready且準備執行的Process</li>
+<li>Device queues - 等待 I/O Device的Process</li>
+</ol>
+<h4 id="Schedule"><a href="#Schedule" class="headerlink" title="Schedule"></a>Schedule</h4><p>Process輪換執行的機制, 有以下三種方式</p>
+<ol>
+<li>Long-Term Scheduler(或稱Job Scheduler)<ul>
+<li>Process狀態 new → ready</li>
+<li>從上述的job Queue中挑選合適的jobs,並載入到記憶體中準備執行</li>
+<li>通常適用於Batch System(大型機房),但不適用於Time-Sharing System(分時系統)</li>
+<li>執行頻率最<code>低</code></li>
+</ul>
+</li>
+<li>Short-Term Scheduler(或稱CPU Scheduler)<ul>
+<li>Process狀態 ready → running</li>
+<li>從ready Queue中挑選高優先度的Process,使其獲得CPU控制權執行</li>
+<li>Batch System和Time-Sharing均需要</li>
+<li>執行頻率最<code>高</code></li>
+</ul>
+</li>
+<li>Medium-Term Scheduler<ul>
+<li>virtual memory</li>
+<li>當Memory空間不夠時,要把Process swap out到Disk中,直到空間足夠時再將Process swap in到Memory</li>
+<li>通常用在Time Sharing System<br><img src="/image/20220119/process5.png"></li>
+</ul>
+</li>
+</ol>
+<h4 id="Process優缺"><a href="#Process優缺" class="headerlink" title="Process優缺"></a>Process優缺</h4><p>優點</p>
+<ul>
+<li>相對比較穩定安全，因為每一個Process都擁有獨立的OS資源，Process間較不容易互相影響，而且因為不會共享Data的問題，所以不須對Process作互斥存取之機制(互斥鎖)</li>
+</ul>
+<p>缺點</p>
+<ul>
+<li>建立Process以及Process的上下文切換(Context Switch)都較消耗資源，Process間若有通訊的需求也較為複雜</li>
+</ul>
+<!-- Thread -->
+<h3 id="Thread-線程、執行緒"><a href="#Thread-線程、執行緒" class="headerlink" title="Thread - 線程、執行緒"></a>Thread - 線程、執行緒</h3><h4 id="什麼是Thread"><a href="#什麼是Thread" class="headerlink" title="什麼是Thread"></a>什麼是Thread</h4><p>Thread又稱作是light weight process, 也就是輕量級的Process,Thread可以想像成是在Process裡面的,一個Process裡面至少會有一個Thread,而我們說Process會去執行任務,其實就是Process裡面的Thread去做的，所以沒有Process就沒有Thread。</p>
+<p>當一個Process內有多個Thread,這些Thread會共享這個Process的OS資源,可以把Process比喻為一個工廠,Thread則是工廠裡面的工人,負責任務的實際執行。</p>
+<h4 id="為什麼要有Thread"><a href="#為什麼要有Thread" class="headerlink" title="為什麼要有Thread"></a>為什麼要有Thread</h4><ol>
+<li>Process之間的資料難以共享,父子Process之間並未共享內存,需要通過IPC,在Process之間交換資料,效能開銷也比較大</li>
+<li>建立Process(以fork的方式)的性能開銷比較大</li>
+</ol>
+<h4 id="Thread的主要組成"><a href="#Thread的主要組成" class="headerlink" title="Thread的主要組成"></a>Thread的主要組成</h4><ul>
+<li>Thread ID</li>
+<li>Programming Counter</li>
+<li>CPU registers</li>
+<li>stack</li>
+</ul>
+<h4 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h4><ul>
+<li>Process是資源分配的最小單位,Thread是最小的操作單位,也是cpu的最小執行單位</li>
+<li>每個Process由一個Memory Space和一個以上的Thread所組成</li>
+<li>一個Process底下的所有Thread會共享資源</li>
+<li>同一個Process內的Thread使用相同的Memory Space, 但這些Thread各自擁有其Stack<br>  換句話說,Thread能透過reference存取到相同的Object,但是local variable各自獨立</li>
+<li>OS會根據Thread的優先權以及使用過的CPU時間,在不同的Thread做切換,讓各個Thread都有執行的機會</li>
+<li>Thread會有Race Condition資源競爭的問題</li>
+</ul>
+<h3 id="Multi-processing-多進程-amp-Multi-threading-多執行緒"><a href="#Multi-processing-多進程-amp-Multi-threading-多執行緒" class="headerlink" title="Multi-processing (多進程) &amp; Multi-threading (多執行緒)"></a>Multi-processing (多進程) &amp; Multi-threading (多執行緒)</h3><h4 id="並發-Concurrent-vs-並行-Parallel"><a href="#並發-Concurrent-vs-並行-Parallel" class="headerlink" title="並發(Concurrent) vs 並行(Parallel)"></a>並發(Concurrent) vs 並行(Parallel)</h4><p><img src="/image/20220119/6.png"></p>
+<ul>
+<li>Concurrent : 多個任務同時互相搶相同的CPU資源,搶到的就優先執行該任務,所以在一個時間點上只有一個任務在執行</li>
+<li>Parallel : 每個CPU會各自負責自己的任務,而且是同事進行,沒有切換的問題</li>
+</ul>
+<p>補充 : 單核心的電腦只能做到Concurrent,而現在的電腦都已經是多核心的才可以達到Parallel,也因為這樣現在電腦的速度相較以前快很多。</p>
+<h4 id="Multi-processing-多進程"><a href="#Multi-processing-多進程" class="headerlink" title="Multi-processing - 多進程"></a>Multi-processing - 多進程</h4><p>指多個Process在執行,彼此有各自的資料空間,若有資料需要共用,必須採用特別的方法(IPC)來傳遞,由於每個Process都需要一些資源來工作,所以Multi-processing會比Multi-threading更消耗資源。<br>補 : Google Chrome採用這種設計,因此會消耗不少記憶體</p>
+<h4 id="Multi-threading-多執行緒"><a href="#Multi-threading-多執行緒" class="headerlink" title="### Multi-threading - 多執行緒"></a>### Multi-threading - 多執行緒</h4><p>指一個Process裡有多個Thread在執行,彼此共用相同的資料空間。</p>
+<p>Multi-threading工作的其中一項特點就是隸屬在同一個Process下的所有Thread會分享該Process的所有資源,此外各Thread彼此間也可以擁有自己私有的資源而不與其它同一Process內的Thread共用。</p>
+<h4 id="Multi-processing-vs-Multi-threading"><a href="#Multi-processing-vs-Multi-threading" class="headerlink" title="Multi-processing vs Multi-threading"></a>Multi-processing vs Multi-threading</h4><p>一間工廠(Process)擁有資源與設備但需要由員工(Thread)去操作才能生產產品。所以要做出一件成品,工廠內至少要有一位員工在做事。以電腦分時架構來看,不同的Process就像是不同的工廠,而Thread則像是一位派遣員工一樣由作業系統負責調度他在什麼時間該去那家工廠上班。</p>
+<p>如果電腦擁有多個處理核心,即代表系統可以同時調用的員工數目增加,所謂人多好辦事,如此一來系統在為執行緒安排工作時就有兩種策略：</p>
+<ol>
+<li>第一種策略是在同一時間內為各家工廠都分配一個員工去作事,這種方式稱作多行程(Multi-processing)平行執行。跟單一行程處理比起來,其優點在於<strong>可以在相同的時間內完成較多的工作</strong>。</li>
+<li>另一種策略是在同一時間內把所有員工都派到同一家工廠去工作,此法稱做多執行緒 (Multi-threading) 平行執行。相較於單一執行緒處理方式,它<strong>有機會讓相同的工作在比較短的時間內完成</strong>。</li>
+</ol>
+<p><a href="https://zhuanlan.zhihu.com/p/106238630">Process &amp; Thread的工廠例子</a></p>
+<h4 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h4><h5 id="Coroutine是什麼"><a href="#Coroutine是什麼" class="headerlink" title="Coroutine是什麼"></a>Coroutine是什麼</h5><p>Coroutine是一種用戶態的輕量級Thread,可以想成一個Thread裡面可以有多個Coroutine,而Coroutine的調度完全由用戶控制,Coroutine也會有自己的資源,並且由Coroutine的調度器來控制說目前由哪個Coroutine執行,哪個Coroutine要被block住。</p>
+<p>而相對於Process及Thread的調度,則是由CPU內核去進行調度,因此OS那邊其實會有所謂許多的調度算法,並且可以進行搶占式調度,可以主動搶奪執行的控制權。反之,Coroutine是不行的,只能進行非搶佔式的調度。可以理解成,如果Coroutine被block住,則會在用戶態直接切換另外一個 Coroutine給此Thread繼續執行,這樣其他Coroutine就不會被block住,讓資源能夠有效的被利用。</p>
+<h4 id="Coroutine優勢"><a href="#Coroutine優勢" class="headerlink" title="Coroutine優勢"></a>Coroutine優勢</h4><ul>
+<li>節省CPU : 避免系統內核集的Thread頻繁切換,造成CPU的資源浪費,再加上Coroutine是用戶態的線程,所以用戶可以自行控制Coroutine的建立與刪除,極大程度的避免了系統級Thread的資源切換</li>
+<li>節省內存 : 一個Thread需要花費幾MB的記憶體,而一個Coroutine只需要幾KB的記憶體</li>
+<li>稳定性 : 因為Thread之間會共享資源,如果當一個Thread出錯了,Process中的其他Thread也會有機率一起出錯</li>
+<li>開發效率 : 由於Coroutine可以給用戶控制,所以工程師可以做一些async的操作<br>  Ex : 讀寫文件、耗時的I/O請求</li>
+</ul>
+<p><a href="https://www.zhihu.com/question/328196975">補充:用戶態vs內核態</a></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxMDI4MDc1NA==&mid=2247488604&idx=1&sn=83219ea874b1345debc65904cd7f025a&scene=21#wechat_redirect">Go 面试官：什么是协程，协程和线程的区别和联系？</a><br><a href="https://ithelp.ithome.com.tw/articles/10242047">進程、線程、協程，傻傻分得清楚！</a><br><a href="https://pjchender.dev/computer-science/cs-process-thread/">進程與線程的概念整理（process and thread</a><br><a href="https://blog.kennycoder.io/2020/05/16/%E9%80%B2%E7%A8%8B-Process-%E3%80%81%E7%B7%9A%E7%A8%8B-Thread-%E3%80%81%E5%8D%94%E7%A8%8B-Coroutine-%E7%9A%84%E6%A6%82%E5%BF%B5%E8%AC%9B%E8%A7%A3/">進程 (Process)、線程 (Thread)、協程 (Coroutine) 的概念講解</a><br><a href="https://ithelp.ithome.com.tw/articles/10276152?sc=iThelpR">Process</a><br><a href="https://mropengate.blogspot.com/2015/01/operating-system-ch3-processes.html">OS - Ch3 行程 Process</a><br><a href="https://medium.com/erens-tech-book/%E7%90%86%E8%A7%A3-process-thread-94a40721b492">【恐龍】理解 Process &amp; Thread</a></p>
+]]></content>
+      <categories>
+        <category>Computer Science</category>
+      </categories>
+      <tags>
+        <tag>Computer Science</tag>
+        <tag>Process</tag>
+        <tag>Thread</tag>
+        <tag>Coroutine</tag>
       </tags>
   </entry>
 </search>

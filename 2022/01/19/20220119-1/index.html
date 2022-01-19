@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-loading-bar.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yautze.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","Pisces | Gemini":240,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="常常分不清楚進程 (Process)、線程 (Thread)、協程 (Coroutine)這三個有什麼差別嗎?不了解這三者的到底有何關係嗎？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="進程 (Process)、線程 (Thread)、協程 (Coroutine)">
+<meta property="og:url" content="https://yautze.github.io/2022/01/19/20220119-1/index.html">
+<meta property="og:site_name" content="YauTz&#39;s Blog">
+<meta property="og:description" content="常常分不清楚進程 (Process)、線程 (Thread)、協程 (Coroutine)這三個有什麼差別嗎?不了解這三者的到底有何關係嗎？">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://yautze.github.io/image/20220119/process1.png">
+<meta property="og:image" content="https://yautze.github.io/image/20220119/process2.png">
+<meta property="og:image" content="https://yautze.github.io/image/20220119/process3.png">
+<meta property="og:image" content="https://yautze.github.io/image/20220119/process4.png">
+<meta property="og:image" content="https://yautze.github.io/image/20220119/process5.png">
+<meta property="og:image" content="https://yautze.github.io/image/20220119/6.png">
+<meta property="article:published_time" content="2022-01-19T07:57:31.000Z">
+<meta property="article:modified_time" content="2022-01-19T08:46:57.067Z">
+<meta property="article:author" content="YauTz">
+<meta property="article:tag" content="Computer Science">
+<meta property="article:tag" content="Process">
+<meta property="article:tag" content="Thread">
+<meta property="article:tag" content="Coroutine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yautze.github.io/image/20220119/process1.png">
+
+<link rel="canonical" href="https://yautze.github.io/2022/01/19/20220119-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>進程 (Process)、線程 (Thread)、協程 (Coroutine) | YauTz's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">YauTz's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Backend Engineer</br>正在成長茁壯的問題解決工程師</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔<span class="badge">3</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜尋
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜尋..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/yautze" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://yautze.github.io/2022/01/19/20220119-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="YauTz">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YauTz's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          進程 (Process)、線程 (Thread)、協程 (Coroutine)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2022-01-19 15:57:31 / 修改時間：16:46:57" itemprop="dateCreated datePublished" datetime="2022-01-19T15:57:31+08:00">2022-01-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Computer-Science/" itemprop="url" rel="index"><span itemprop="name">Computer Science</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/01/19/20220119-1/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/01/19/20220119-1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>5k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>5 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>常常分不清楚進程 (Process)、線程 (Thread)、協程 (Coroutine)這三個有什麼差別嗎?<br>不了解這三者的到底有何關係嗎？</p>
+<span id="more"></span>
+
+<!-- Process -->
+<h3 id="Process-進程、程序"><a href="#Process-進程、程序" class="headerlink" title="Process - 進程、程序"></a>Process - 進程、程序</h3><h4 id="什麼是Process"><a href="#什麼是Process" class="headerlink" title="什麼是Process"></a>什麼是Process</h4><p>Process指的就是執行中的程式實例,而一個Process會被分配到的OS資源有CPU Time、Memory、I/O Devices 等,簡單來說這個Process執行的時候會需要用到多久的 CPU 時間、花費多少記憶體、甚至可能會需要一些 I/O 設備的資源。</p>
+<p><img src="/image/20220119/process1.png"></p>
+<p>可以打開工作管理員來看看,一個應用程式就是對應一個Process,而Process對於作業系統(OS)來說也可以說是一個任務,每一個Process都會有各自對應的獨立地址空間。</p>
+<h4 id="為什麼要有Process"><a href="#為什麼要有Process" class="headerlink" title="為什麼要有Process"></a>為什麼要有Process</h4><p>為了<code>合理的壓榨CPU的效能</code>和分配運行的資源,簡單來說不能讓CPU閒著</p>
+<p>在電腦中,計算核心是CPU,負責所有計算相關的工作和資源,單個CPU一次只能執行一個任務,且一個Process執行時,就把唯一一個CPU給吃滿的話,那是蠻不合理的一件事,再加上CPU與RAM或其它硬體設備的運算速度相比是快上非常多的,所以才會去壓榨CPU。</p>
+<h4 id="Process主要組成"><a href="#Process主要組成" class="headerlink" title="Process主要組成"></a>Process主要組成</h4><ol>
+<li><p>Code Section(Text Section)<br> 指得是程式碼的部分, 每一個Process都是執行某一段程式碼所產生的</p>
+</li>
+<li><p>Data Section<br> 指得是資料的部分, 代表Process所會用的資源(Ex: 全域變數、靜態變數)</p>
+</li>
+<li><p>CPU Registers<br> 指的是CPU的暫存器的內容，專門暫存指令、資料和位址的記憶體空間</p>
+</li>
+<li><p>Programming Counter &amp; Other Registers<br> 指的是程式計數器，負責記錄下一個要執行程式的地址</p>
+</li>
+<li><p>Stack<br> 包含Temporary data - 暫時性的資料<br> Ex: Function Parameters、Local variables、return address</p>
+<p> 補充 : 會稱作 stack 是由於其配置遵守 LIFO</p>
+</li>
+<li><p>Heap<br> 包含Memory dynamically allocated during run time - 運行時的動態記憶體分配</p>
+<p> 一般由程式設計師分配釋放，執行時才會知道配置大小<br> Ex: malloc/new、free/delete、pointer變數</p>
+</li>
+</ol>
+<h4 id="Process狀態"><a href="#Process狀態" class="headerlink" title="Process狀態"></a>Process狀態</h4><p>依據不同的情況會不同的狀態</p>
+<ul>
+<li>new(新產生) : Process產生中</li>
+<li>ready(就緒) : Process正在等待CPU分配資源,只要一拿到資源就可以馬上執行</li>
+<li>running(執行中) : Process取得CPU資源並且執行中</li>
+<li>waiting(等待) : Process在等待某個事件的發生,可能是等待 I/O 設備輸入輸出完成或是接收到一個信號，也可以想成是被 block (阻塞) 住</li>
+<li>terminated(exit 完成) : Process執行完成,將資源釋放掉</li>
+</ul>
+<p>記憶體<code>足夠</code>時的狀態轉換<br><img src="/image/20220119/process2.png"></p>
+<ol>
+<li>建立好Process後</li>
+<li>分配完Memory後進入ready</li>
+<li>拿到CPU資源後進入running</li>
+<li>中間會來回切換執行別的Process,執行完成之後就terminated</li>
+<li>如果執行中間需要進行I/O或是意外狀況,則進入waiting等待例外事件完成</li>
+</ol>
+<p>記憶體<code>不足夠</code>時的狀態轉換(swap-硬碟)<br><img src="/image/20220119/process3.png"><br>當記憶體不夠時,Process會先將本來要存入記憶體的資源會swap進硬碟中,等到有足夠的記憶體資源時,再從硬碟中取出,也因此導致Process的執行速度變慢</p>
+<h4 id="Context-Switch"><a href="#Context-Switch" class="headerlink" title="Context Switch"></a>Context Switch</h4><p>讓多個process可以分享單一個CPU資源的計算過程<br>當CPU Context Switch到另一個process,系統會儲存舊process的狀態並載入新process的狀態<br>Context switch 的時間是overhead,耗時根據硬體配備而不同</p>
+<p>補充 : overhead就是執行一件任務的過程中，無用的開銷</p>
+<p>交換的時機有以下幾種：</p>
+<ul>
+<li>多工</li>
+<li>中斷處理</li>
+<li>用戶態或者內核態的交換 (可能)</li>
+</ul>
+<p>Process Control Block (PCB) : OS核心中一種資料結構,當切換process時,會把未做完的process相關資訊記錄在PCB裡<br><img src="/image/20220119/process4.png"></p>
+<p>Process Scheduling Queue : OS在Process Scheduling Queue中維護所有的 PCB</p>
+<ol>
+<li>Job queue - 所有在系統上的Process</li>
+<li>Ready queue - 存在主記憶體中, 狀態為ready且準備執行的Process</li>
+<li>Device queues - 等待 I/O Device的Process</li>
+</ol>
+<h4 id="Schedule"><a href="#Schedule" class="headerlink" title="Schedule"></a>Schedule</h4><p>Process輪換執行的機制, 有以下三種方式</p>
+<ol>
+<li>Long-Term Scheduler(或稱Job Scheduler)<ul>
+<li>Process狀態 new → ready</li>
+<li>從上述的job Queue中挑選合適的jobs,並載入到記憶體中準備執行</li>
+<li>通常適用於Batch System(大型機房),但不適用於Time-Sharing System(分時系統)</li>
+<li>執行頻率最<code>低</code></li>
+</ul>
+</li>
+<li>Short-Term Scheduler(或稱CPU Scheduler)<ul>
+<li>Process狀態 ready → running</li>
+<li>從ready Queue中挑選高優先度的Process,使其獲得CPU控制權執行</li>
+<li>Batch System和Time-Sharing均需要</li>
+<li>執行頻率最<code>高</code></li>
+</ul>
+</li>
+<li>Medium-Term Scheduler<ul>
+<li>virtual memory</li>
+<li>當Memory空間不夠時,要把Process swap out到Disk中,直到空間足夠時再將Process swap in到Memory</li>
+<li>通常用在Time Sharing System<br><img src="/image/20220119/process5.png"></li>
+</ul>
+</li>
+</ol>
+<h4 id="Process優缺"><a href="#Process優缺" class="headerlink" title="Process優缺"></a>Process優缺</h4><p>優點</p>
+<ul>
+<li>相對比較穩定安全，因為每一個Process都擁有獨立的OS資源，Process間較不容易互相影響，而且因為不會共享Data的問題，所以不須對Process作互斥存取之機制(互斥鎖)</li>
+</ul>
+<p>缺點</p>
+<ul>
+<li>建立Process以及Process的上下文切換(Context Switch)都較消耗資源，Process間若有通訊的需求也較為複雜</li>
+</ul>
+<!-- Thread -->
+<h3 id="Thread-線程、執行緒"><a href="#Thread-線程、執行緒" class="headerlink" title="Thread - 線程、執行緒"></a>Thread - 線程、執行緒</h3><h4 id="什麼是Thread"><a href="#什麼是Thread" class="headerlink" title="什麼是Thread"></a>什麼是Thread</h4><p>Thread又稱作是light weight process, 也就是輕量級的Process,Thread可以想像成是在Process裡面的,一個Process裡面至少會有一個Thread,而我們說Process會去執行任務,其實就是Process裡面的Thread去做的，所以沒有Process就沒有Thread。</p>
+<p>當一個Process內有多個Thread,這些Thread會共享這個Process的OS資源,可以把Process比喻為一個工廠,Thread則是工廠裡面的工人,負責任務的實際執行。</p>
+<h4 id="為什麼要有Thread"><a href="#為什麼要有Thread" class="headerlink" title="為什麼要有Thread"></a>為什麼要有Thread</h4><ol>
+<li>Process之間的資料難以共享,父子Process之間並未共享內存,需要通過IPC,在Process之間交換資料,效能開銷也比較大</li>
+<li>建立Process(以fork的方式)的性能開銷比較大</li>
+</ol>
+<h4 id="Thread的主要組成"><a href="#Thread的主要組成" class="headerlink" title="Thread的主要組成"></a>Thread的主要組成</h4><ul>
+<li>Thread ID</li>
+<li>Programming Counter</li>
+<li>CPU registers</li>
+<li>stack</li>
+</ul>
+<h4 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h4><ul>
+<li>Process是資源分配的最小單位,Thread是最小的操作單位,也是cpu的最小執行單位</li>
+<li>每個Process由一個Memory Space和一個以上的Thread所組成</li>
+<li>一個Process底下的所有Thread會共享資源</li>
+<li>同一個Process內的Thread使用相同的Memory Space, 但這些Thread各自擁有其Stack<br>  換句話說,Thread能透過reference存取到相同的Object,但是local variable各自獨立</li>
+<li>OS會根據Thread的優先權以及使用過的CPU時間,在不同的Thread做切換,讓各個Thread都有執行的機會</li>
+<li>Thread會有Race Condition資源競爭的問題</li>
+</ul>
+<h3 id="Multi-processing-多進程-amp-Multi-threading-多執行緒"><a href="#Multi-processing-多進程-amp-Multi-threading-多執行緒" class="headerlink" title="Multi-processing (多進程) &amp; Multi-threading (多執行緒)"></a>Multi-processing (多進程) &amp; Multi-threading (多執行緒)</h3><h4 id="並發-Concurrent-vs-並行-Parallel"><a href="#並發-Concurrent-vs-並行-Parallel" class="headerlink" title="並發(Concurrent) vs 並行(Parallel)"></a>並發(Concurrent) vs 並行(Parallel)</h4><p><img src="/image/20220119/6.png"></p>
+<ul>
+<li>Concurrent : 多個任務同時互相搶相同的CPU資源,搶到的就優先執行該任務,所以在一個時間點上只有一個任務在執行</li>
+<li>Parallel : 每個CPU會各自負責自己的任務,而且是同事進行,沒有切換的問題</li>
+</ul>
+<p>補充 : 單核心的電腦只能做到Concurrent,而現在的電腦都已經是多核心的才可以達到Parallel,也因為這樣現在電腦的速度相較以前快很多。</p>
+<h4 id="Multi-processing-多進程"><a href="#Multi-processing-多進程" class="headerlink" title="Multi-processing - 多進程"></a>Multi-processing - 多進程</h4><p>指多個Process在執行,彼此有各自的資料空間,若有資料需要共用,必須採用特別的方法(IPC)來傳遞,由於每個Process都需要一些資源來工作,所以Multi-processing會比Multi-threading更消耗資源。<br>補 : Google Chrome採用這種設計,因此會消耗不少記憶體</p>
+<h4 id="Multi-threading-多執行緒"><a href="#Multi-threading-多執行緒" class="headerlink" title="### Multi-threading - 多執行緒"></a>### Multi-threading - 多執行緒</h4><p>指一個Process裡有多個Thread在執行,彼此共用相同的資料空間。</p>
+<p>Multi-threading工作的其中一項特點就是隸屬在同一個Process下的所有Thread會分享該Process的所有資源,此外各Thread彼此間也可以擁有自己私有的資源而不與其它同一Process內的Thread共用。</p>
+<h4 id="Multi-processing-vs-Multi-threading"><a href="#Multi-processing-vs-Multi-threading" class="headerlink" title="Multi-processing vs Multi-threading"></a>Multi-processing vs Multi-threading</h4><p>一間工廠(Process)擁有資源與設備但需要由員工(Thread)去操作才能生產產品。所以要做出一件成品,工廠內至少要有一位員工在做事。以電腦分時架構來看,不同的Process就像是不同的工廠,而Thread則像是一位派遣員工一樣由作業系統負責調度他在什麼時間該去那家工廠上班。</p>
+<p>如果電腦擁有多個處理核心,即代表系統可以同時調用的員工數目增加,所謂人多好辦事,如此一來系統在為執行緒安排工作時就有兩種策略：</p>
+<ol>
+<li>第一種策略是在同一時間內為各家工廠都分配一個員工去作事,這種方式稱作多行程(Multi-processing)平行執行。跟單一行程處理比起來,其優點在於<strong>可以在相同的時間內完成較多的工作</strong>。</li>
+<li>另一種策略是在同一時間內把所有員工都派到同一家工廠去工作,此法稱做多執行緒 (Multi-threading) 平行執行。相較於單一執行緒處理方式,它<strong>有機會讓相同的工作在比較短的時間內完成</strong>。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/106238630">Process &amp; Thread的工廠例子</a></p>
+<h4 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h4><h5 id="Coroutine是什麼"><a href="#Coroutine是什麼" class="headerlink" title="Coroutine是什麼"></a>Coroutine是什麼</h5><p>Coroutine是一種用戶態的輕量級Thread,可以想成一個Thread裡面可以有多個Coroutine,而Coroutine的調度完全由用戶控制,Coroutine也會有自己的資源,並且由Coroutine的調度器來控制說目前由哪個Coroutine執行,哪個Coroutine要被block住。</p>
+<p>而相對於Process及Thread的調度,則是由CPU內核去進行調度,因此OS那邊其實會有所謂許多的調度算法,並且可以進行搶占式調度,可以主動搶奪執行的控制權。反之,Coroutine是不行的,只能進行非搶佔式的調度。可以理解成,如果Coroutine被block住,則會在用戶態直接切換另外一個 Coroutine給此Thread繼續執行,這樣其他Coroutine就不會被block住,讓資源能夠有效的被利用。</p>
+<h4 id="Coroutine優勢"><a href="#Coroutine優勢" class="headerlink" title="Coroutine優勢"></a>Coroutine優勢</h4><ul>
+<li>節省CPU : 避免系統內核集的Thread頻繁切換,造成CPU的資源浪費,再加上Coroutine是用戶態的線程,所以用戶可以自行控制Coroutine的建立與刪除,極大程度的避免了系統級Thread的資源切換</li>
+<li>節省內存 : 一個Thread需要花費幾MB的記憶體,而一個Coroutine只需要幾KB的記憶體</li>
+<li>稳定性 : 因為Thread之間會共享資源,如果當一個Thread出錯了,Process中的其他Thread也會有機率一起出錯</li>
+<li>開發效率 : 由於Coroutine可以給用戶控制,所以工程師可以做一些async的操作<br>  Ex : 讀寫文件、耗時的I/O請求</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/328196975">補充:用戶態vs內核態</a></p>
+<h3 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h3><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzUxMDI4MDc1NA==&mid=2247488604&idx=1&sn=83219ea874b1345debc65904cd7f025a&scene=21#wechat_redirect">Go 面试官：什么是协程，协程和线程的区别和联系？</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10242047">進程、線程、協程，傻傻分得清楚！</a><br><a target="_blank" rel="noopener" href="https://pjchender.dev/computer-science/cs-process-thread/">進程與線程的概念整理（process and thread</a><br><a target="_blank" rel="noopener" href="https://blog.kennycoder.io/2020/05/16/%E9%80%B2%E7%A8%8B-Process-%E3%80%81%E7%B7%9A%E7%A8%8B-Thread-%E3%80%81%E5%8D%94%E7%A8%8B-Coroutine-%E7%9A%84%E6%A6%82%E5%BF%B5%E8%AC%9B%E8%A7%A3/">進程 (Process)、線程 (Thread)、協程 (Coroutine) 的概念講解</a><br><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10276152?sc=iThelpR">Process</a><br><a target="_blank" rel="noopener" href="https://mropengate.blogspot.com/2015/01/operating-system-ch3-processes.html">OS - Ch3 行程 Process</a><br><a target="_blank" rel="noopener" href="https://medium.com/erens-tech-book/%E7%90%86%E8%A7%A3-process-thread-94a40721b492">【恐龍】理解 Process &amp; Thread</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Computer-Science/" rel="tag"># Computer Science</a>
+              <a href="/tags/Process/" rel="tag"># Process</a>
+              <a href="/tags/Thread/" rel="tag"># Thread</a>
+              <a href="/tags/Coroutine/" rel="tag"># Coroutine</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/15/20211215-1/" rel="prev" title="Redis 快取機制 & 淘汰機制">
+      <i class="fa fa-chevron-left"></i> Redis 快取機制 & 淘汰機制
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Process-%E9%80%B2%E7%A8%8B%E3%80%81%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">Process - 進程、程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AFProcess"><span class="nav-number">1.1.</span> <span class="nav-text">什麼是Process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E8%A6%81%E6%9C%89Process"><span class="nav-number">1.2.</span> <span class="nav-text">為什麼要有Process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Process%E4%B8%BB%E8%A6%81%E7%B5%84%E6%88%90"><span class="nav-number">1.3.</span> <span class="nav-text">Process主要組成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Process%E7%8B%80%E6%85%8B"><span class="nav-number">1.4.</span> <span class="nav-text">Process狀態</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Context-Switch"><span class="nav-number">1.5.</span> <span class="nav-text">Context Switch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Schedule"><span class="nav-number">1.6.</span> <span class="nav-text">Schedule</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Process%E5%84%AA%E7%BC%BA"><span class="nav-number">1.7.</span> <span class="nav-text">Process優缺</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread-%E7%B7%9A%E7%A8%8B%E3%80%81%E5%9F%B7%E8%A1%8C%E7%B7%92"><span class="nav-number">2.</span> <span class="nav-text">Thread - 線程、執行緒</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AFThread"><span class="nav-number">2.1.</span> <span class="nav-text">什麼是Thread</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E8%A6%81%E6%9C%89Thread"><span class="nav-number">2.2.</span> <span class="nav-text">為什麼要有Thread</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Thread%E7%9A%84%E4%B8%BB%E8%A6%81%E7%B5%84%E6%88%90"><span class="nav-number">2.3.</span> <span class="nav-text">Thread的主要組成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%8F%E7%B5%90"><span class="nav-number">2.4.</span> <span class="nav-text">小結</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-processing-%E5%A4%9A%E9%80%B2%E7%A8%8B-amp-Multi-threading-%E5%A4%9A%E5%9F%B7%E8%A1%8C%E7%B7%92"><span class="nav-number">3.</span> <span class="nav-text">Multi-processing (多進程) &amp; Multi-threading (多執行緒)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A6%E7%99%BC-Concurrent-vs-%E4%B8%A6%E8%A1%8C-Parallel"><span class="nav-number">3.1.</span> <span class="nav-text">並發(Concurrent) vs 並行(Parallel)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-processing-%E5%A4%9A%E9%80%B2%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">Multi-processing - 多進程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-threading-%E5%A4%9A%E5%9F%B7%E8%A1%8C%E7%B7%92"><span class="nav-number">3.3.</span> <span class="nav-text">### Multi-threading - 多執行緒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-processing-vs-Multi-threading"><span class="nav-number">3.4.</span> <span class="nav-text">Multi-processing vs Multi-threading</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Coroutine"><span class="nav-number">3.5.</span> <span class="nav-text">Coroutine</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Coroutine%E6%98%AF%E4%BB%80%E9%BA%BC"><span class="nav-number">3.5.1.</span> <span class="nav-text">Coroutine是什麼</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Coroutine%E5%84%AA%E5%8B%A2"><span class="nav-number">3.6.</span> <span class="nav-text">Coroutine優勢</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YauTz"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">YauTz</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yautze" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yautze" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/%E6%89%BF%E7%A5%90-%E9%99%B3-855837201/" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;%E6%89%BF%E7%A5%90-%E9%99%B3-855837201&#x2F;" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fas fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YauTz - 轉載文章時請附上作者以及原文網址</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://yautze-blog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://yautze.github.io/2022/01/19/20220119-1/";
+    this.page.identifier = "2022/01/19/20220119-1/";
+    this.page.title = "進程 (Process)、線程 (Thread)、協程 (Coroutine)";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://yautze-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
