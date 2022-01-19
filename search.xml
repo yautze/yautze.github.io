@@ -359,7 +359,7 @@
 <li>另一種策略是在同一時間內把所有員工都派到同一家工廠去工作,此法稱做多執行緒 (Multi-threading) 平行執行。相較於單一執行緒處理方式,它<strong>有機會讓相同的工作在比較短的時間內完成</strong>。</li>
 </ol>
 <p><a href="https://zhuanlan.zhihu.com/p/106238630">Process &amp; Thread的工廠例子</a></p>
-<h4 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h4><h5 id="Coroutine是什麼"><a href="#Coroutine是什麼" class="headerlink" title="Coroutine是什麼"></a>Coroutine是什麼</h5><p>Coroutine是一種用戶態的輕量級Thread,可以想成一個Thread裡面可以有多個Coroutine,而Coroutine的調度完全由用戶控制,Coroutine也會有自己的資源,並且由Coroutine的調度器來控制說目前由哪個Coroutine執行,哪個Coroutine要被block住。</p>
+<h3 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h3><h4 id="Coroutine是什麼"><a href="#Coroutine是什麼" class="headerlink" title="Coroutine是什麼"></a>Coroutine是什麼</h4><p>Coroutine是一種用戶態的輕量級Thread,可以想成一個Thread裡面可以有多個Coroutine,而Coroutine的調度完全由用戶控制,Coroutine也會有自己的資源,並且由Coroutine的調度器來控制說目前由哪個Coroutine執行,哪個Coroutine要被block住。</p>
 <p>而相對於Process及Thread的調度,則是由CPU內核去進行調度,因此OS那邊其實會有所謂許多的調度算法,並且可以進行搶占式調度,可以主動搶奪執行的控制權。反之,Coroutine是不行的,只能進行非搶佔式的調度。可以理解成,如果Coroutine被block住,則會在用戶態直接切換另外一個 Coroutine給此Thread繼續執行,這樣其他Coroutine就不會被block住,讓資源能夠有效的被利用。</p>
 <h4 id="Coroutine優勢"><a href="#Coroutine優勢" class="headerlink" title="Coroutine優勢"></a>Coroutine優勢</h4><ul>
 <li>節省CPU : 避免系統內核集的Thread頻繁切換,造成CPU的資源浪費,再加上Coroutine是用戶態的線程,所以用戶可以自行控制Coroutine的建立與刪除,極大程度的避免了系統級Thread的資源切換</li>
